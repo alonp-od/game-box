@@ -1,0 +1,10 @@
+{
+  "name": "Game Box",
+  "short_name": "Game Box",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffd6f5",
+  "theme_color": "#ffd6f5",
+  "icons": [{ "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}

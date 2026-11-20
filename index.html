@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Game Box">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Game Box</title>
+<style>
+  body { margin: 0; min-height: 100vh; font-family: system-ui, sans-serif; background: linear-gradient(#ffd6f5, #c9e7ff); text-align: center; }
+  h1 { font-size: 3rem; margin: 1.5rem 0; }
+  #games { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.5rem; padding: 1.5rem; max-width: 900px; margin: auto; }
+  #games a { display: flex; flex-direction: column; align-items: center; justify-content: center; aspect-ratio: 1; background: #fff; border-radius: 2rem; box-shadow: 0 6px 0 #0002; text-decoration: none; color: #333; font-size: 1.3rem; font-weight: bold; }
+  #games a span { font-size: 4.5rem; }
+  #games a:active { transform: translateY(4px); box-shadow: 0 2px 0 #0002; }
+  #games:empty::after { content: "No games yet — let's make one! ✨"; grid-column: 1 / -1; font-size: 1.5rem; }
+</style>
+</head>
+<body>
+<h1>🎮 Game Box</h1>
+<div id="games"><!-- one line per game: <a href="games/NAME.html"><span>🐱</span>Name</a> --></div>
+<script>
+  // Offline: sw.js serves from cache when there's no network. Pre-download every game
+  // listed above so they all work offline, not just the ones already played.
+  // (Skipped when opened as a local file — browsers don't allow either there.)
+  if (window.caches && navigator.serviceWorker) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+    const games = [...document.querySelectorAll('#games a')].map(a => a.href);
+    caches.open('games').then(c => c.addAll(['./', 'index.html', 'manifest.json', 'icon.png', ...games])).catch(() => {});
+  }
+</script>
+</body>
+</html>
