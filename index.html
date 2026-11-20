@@ -23,7 +23,9 @@
 </head>
 <body>
 <h1>🎮 Game Box</h1>
-<div id="games"><!-- one line per game: <a href="games/NAME.html"><span>🐱</span>Name</a> --></div>
+<div id="games"><!-- one line per game: <a href="games/NAME.html"><span>🐱</span>Name</a> -->
+<a href="games/lenny-breakfast.html"><span>🥞</span>Lenny's Breakfast</a>
+</div>
 <script>
   // Offline: sw.js serves from cache when there's no network. Pre-download every game
   // listed above so they all work offline, not just the ones already played.
@@ -31,7 +33,7 @@
   if (window.caches && navigator.serviceWorker) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
     const games = [...document.querySelectorAll('#games a')].map(a => a.href);
-    caches.open('games').then(c => c.addAll(['./', 'index.html', 'manifest.json', 'icon.png', ...games])).catch(() => {});
+    caches.open('games').then(c => c.addAll(['./', 'index.html', 'manifest.json', 'icon.png', 'lib/three.module.min.js', 'lib/three.core.js', ...games])).catch(() => {});
   }
 </script>
 </body>
