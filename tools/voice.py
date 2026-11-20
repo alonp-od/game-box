@@ -3,13 +3,14 @@
 Usage: python3 tools/voice.py games/NAME.html ["Voice Name"]
 
 Lines live in the game's <script id="voice-lines" type="application/json"> block; the audio goes into
-<script id="voice-data">. With no voice given, the best installed English voice is used (Premium > Enhanced).
+<script id="voice-data">. With no voice given: Zoe (Premium), else the best installed English voice.
 """
 import base64, json, pathlib, re, subprocess, sys, tempfile
 
 game = pathlib.Path(sys.argv[1])
 installed = re.findall(r'^(.+?)\s+en_\w+\s+#', subprocess.run(['say', '-v', '?'], capture_output=True, text=True).stdout, re.M)
-voice = sys.argv[2] if len(sys.argv) > 2 else next((v for tag in ('(Premium)', '(Enhanced)') for v in installed if tag in v), 'Samantha')
+voice = sys.argv[2] if len(sys.argv) > 2 else 'Zoe (Premium)' if 'Zoe (Premium)' in installed else \
+    next((v for tag in ('(Premium)', '(Enhanced)') for v in installed if tag in v), 'Samantha')  # Zoe = the family's pick
 
 html = game.read_text()
 lines = json.loads(re.search(r'<script id="voice-lines" type="application/json">(.*?)</script>', html, re.S).group(1))
